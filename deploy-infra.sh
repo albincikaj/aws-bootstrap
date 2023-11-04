@@ -6,6 +6,18 @@ CLI_PROFILE=admin
 
 EC2_INSTANCE_TYPE=t2.micro
 
+# Deploys static resources
+aws cloudformation deploy \
+  --region $REGION \
+  --profile $CLI_PROFILE \
+  --stack-name $STACK_NAME-setup \
+  --template-file s3-bucket.yml \
+  --no-fail-on-empty-changeset \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --parameter-overrides \
+    CodePipelineBucket=$CODEPIPELINE_BUCKET
+
+
 # Deploy the CloudFormation template
 echo -e "\n\n=========== Deploying main.yml ==========="
 aws cloudformation deploy \
